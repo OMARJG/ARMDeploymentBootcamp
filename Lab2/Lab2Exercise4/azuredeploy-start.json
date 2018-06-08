@@ -15,7 +15,7 @@
       "type": "string"
     },
     "env": {
-      "defaultValue": "prod",
+      "defaultValue": "test",
       "type": "String"
     },
     "location": {
@@ -39,7 +39,7 @@
       "type": "String"
     },
     "serverfarms_fake_plan_fn": {
-      "defaultValue": "[concat('fake-plan-fn-',parameters('env'))]",
+      "defaultValue": "[concat('fake-farm-fn-',parameters('env'))]",
       "type": "String"
     },
     "config_web_name_1": {
@@ -150,10 +150,6 @@
       "defaultValue": "[concat('fake2-',parameters('env'),'.azurewebsites.net')]",
       "type": "String"
     },
-    "hostNameBindings_fake_api.azurewebsites.net_name": {
-      "defaultValue": "[concat('fake-api-',parameters('env'),'.azurewebsites.net')]",
-      "type": "String"
-    },
     "hostNameBindings_fake_fe.azurewebsites.net_name": {
       "defaultValue": "[concat('fake-fe-',parameters('env'),'.azurewebsites.net')]",
       "type": "String"
@@ -201,9 +197,6 @@
     }
   },
   "variables": {
-    "WebSiteName": "[parameters('sites_fake_api_name')]",
-    "HostNameBinding": "[concat(variables('WebSiteName'), '/', variables('WebsiteDnsCname'))]",
-    "WebsiteDnsCname": "[parameters('customHostName')]",
     "fakesqlName": "[concat('fakesql', uniqueString(resourceGroup().id))]"
   },
   "resources": [
@@ -269,9 +262,7 @@
         "adminSiteName": null,
         "hostingEnvironmentProfile": null,
         "perSiteScaling": false,
-        "reserved": true,
-        "targetWorkerCount": 0,
-        "targetWorkerSizeId": 0
+        "reserved": true
       },
       "dependsOn": []
     },
@@ -279,10 +270,10 @@
       "type": "Microsoft.Web/certificates",
       "name": "[parameters('certificateName')]",
       "apiVersion": "2016-03-01",
-      "location": "[resourceGroup().location]",
+      "location": "East US",
       "properties": {
         "hostNames": [
-          "[variables('WebsiteDnsCname')]",
+          "[parameters('customHostName')]",
         ],
         "pfxBlob": "[parameters('certificatePfxBase64')]",
         "password": "[parameters('certificatePfxPassword')]"
@@ -290,9 +281,9 @@
     },
     {
       "type": "Microsoft.Web/sites/hostnameBindings",
-      "name": "[variables('HostNameBinding')]",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('customHostname'))]",
       "apiVersion": "2016-03-01",
-      "location": "[resourceGroup().location]",
+      "location": "East US",
       "properties": {
         "sslState": "SniEnabled",
         "thumbprint": "[reference(resourceId('Microsoft.Web/certificates', parameters('certificateName'))).Thumbprint]"
@@ -315,24 +306,6 @@
       "scale": null,
       "properties": {
         "enabled": true,
-        "hostNameSslStates": [
-          {
-            "name": "[concat(parameters('sites_fake_fe_name'),'.azurewebsites.net')]",
-            "sslState": "Disabled",
-            "virtualIP": null,
-            "thumbprint": null,
-            "toUpdate": null,
-            "hostType": "Standard"
-          },
-          {
-            "name": "[concat(parameters('sites_fake_fe_name'),'.scm.azurewebsites.net')]",
-            "sslState": "Disabled",
-            "virtualIP": null,
-            "thumbprint": null,
-            "toUpdate": null,
-            "hostType": "Repository"
-          }
-        ],
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]",
         "reserved": true,
         "siteConfig": null,
@@ -346,6 +319,7 @@
         "cloningInfo": null
       },
       "dependsOn": [
+        "[concat('Microsoft.Web/certificates/',parameters('certificateName'))]",
         "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]"
       ]
     },
@@ -1125,22 +1099,6 @@
         "start_time": "2018-05-21T14:34:13.460589Z",
         "end_time": "2018-05-21T14:34:13.460589Z",
         "active": false
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
-      ]
-    },
-    {
-      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/hostNameBindings/fake-api-test.azurewebsites.net'.",
-      "type": "Microsoft.Web/sites/hostNameBindings",
-      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('hostNameBindings_fake_api.azurewebsites.net_name'))]",
-      "apiVersion": "2016-08-01",
-      "location": "East US",
-      "scale": null,
-      "properties": {
-        "siteName": "[parameters('sites_fake_api_name')]",
-        "domainId": null,
-        "hostNameType": "Verified"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"

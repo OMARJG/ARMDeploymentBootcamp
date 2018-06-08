@@ -15,7 +15,7 @@
       "type": "string"
     },
     "env": {
-      "defaultValue": "prod",
+      "defaultValue": "test",
       "type": "String"
     },
     "location": {
@@ -39,7 +39,7 @@
       "type": "String"
     },
     "serverfarms_fake_plan_fn": {
-      "defaultValue": "[concat('fake-plan-fn-',parameters('env'))]",
+      "defaultValue": "[concat('fake-farm-fn-',parameters('env'))]",
       "type": "String"
     },
     "config_web_name_1": {
@@ -48,10 +48,6 @@
     },
     "config_web_name_2": {
       "defaultValue": "web",
-      "type": "String"
-    },
-    "storageAccounts_fake3_name": {
-      "defaultValue": "[concat('fake3',parameters('env'))]",
       "type": "String"
     },
     "config_web_name_3": {
@@ -150,101 +146,12 @@
       "defaultValue": "[concat('fake2-',parameters('env'),'.azurewebsites.net')]",
       "type": "String"
     },
-    "hostNameBindings_fake_api.azurewebsites.net_name": {
-      "defaultValue": "[concat('fake-api-',parameters('env'),'.azurewebsites.net')]",
-      "type": "String"
-    },
     "hostNameBindings_fake_fe.azurewebsites.net_name": {
       "defaultValue": "[concat('fake-fe-',parameters('env'),'.azurewebsites.net')]",
       "type": "String"
-    },
-    "fakesqlAdminLogin": {
-      "type": "string",
-      "minLength": 1
-    },
-    "fakesqlAdminLoginPassword": {
-      "type": "securestring"
-    },
-    "fakesqldisplayName": {
-      "type": "string",
-      "minLength": 1
-    },
-    "fakesqldisplayCollation": {
-      "type": "string",
-      "minLength": 1,
-      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
-    },
-    "fakesqldisplayEdition": {
-      "type": "string",
-      "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "Standard",
-        "Premium"
-      ]
-    },
-    "fakesqldisplayRequestedServiceObjectiveName": {
-      "type": "string",
-      "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "S0",
-        "S1",
-        "S2",
-        "P1",
-        "P2",
-        "P3"
-      ],
-      "metadata": {
-        "description": "Describes the performance level for Edition"
-      }
     }
   },
-  "variables": {
-    "WebSiteName": "[parameters('sites_fake_api_name')]",
-    "HostNameBinding": "[concat(variables('WebSiteName'), '/', variables('WebsiteDnsCname'))]",
-    "WebsiteDnsCname": "[parameters('customHostName')]",
-    "fakesqlName": "[concat('fakesql', uniqueString(resourceGroup().id))]"
-  },
   "resources": [
-    {
-      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Storage/storageAccounts/fakedatatest'.",
-      "type": "Microsoft.Storage/storageAccounts",
-      "sku": {
-        "name": "Standard_RAGRS",
-        "tier": "Standard"
-      },
-      "kind": "StorageV2",
-      "name": "[parameters('storageAccounts_fake3_name')]",
-      "apiVersion": "2017-10-01",
-      "location": "[parameters('location')]",
-      "tags": {
-        "ENV": "[parameters('env')]"
-      },
-      "scale": null,
-      "properties": {
-        "networkAcls": {
-          "bypass": "AzureServices",
-          "virtualNetworkRules": [],
-          "ipRules": [],
-          "defaultAction": "Allow"
-        },
-        "supportsHttpsTrafficOnly": false,
-        "encryption": {
-          "services": {
-            "file": {
-              "enabled": true
-            },
-            "blob": {
-              "enabled": true
-            }
-          },
-          "keySource": "Microsoft.Storage"
-        },
-        "accessTier": "Hot"
-      },
-      "dependsOn": []
-    },
     {
       "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/serverfarms/fake-plan-fn'.",
       "type": "Microsoft.Web/serverfarms",
@@ -269,9 +176,7 @@
         "adminSiteName": null,
         "hostingEnvironmentProfile": null,
         "perSiteScaling": false,
-        "reserved": true,
-        "targetWorkerCount": 0,
-        "targetWorkerSizeId": 0
+        "reserved": true
       },
       "dependsOn": []
     },
@@ -279,10 +184,10 @@
       "type": "Microsoft.Web/certificates",
       "name": "[parameters('certificateName')]",
       "apiVersion": "2016-03-01",
-      "location": "[resourceGroup().location]",
+      "location": "East US",
       "properties": {
         "hostNames": [
-          "[variables('WebsiteDnsCname')]",
+          "[parameters('customHostName')]"
         ],
         "pfxBlob": "[parameters('certificatePfxBase64')]",
         "password": "[parameters('certificatePfxPassword')]"
@@ -290,9 +195,9 @@
     },
     {
       "type": "Microsoft.Web/sites/hostnameBindings",
-      "name": "[variables('HostNameBinding')]",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('customHostname'))]",
       "apiVersion": "2016-03-01",
-      "location": "[resourceGroup().location]",
+      "location": "East US",
       "properties": {
         "sslState": "SniEnabled",
         "thumbprint": "[reference(resourceId('Microsoft.Web/certificates', parameters('certificateName'))).Thumbprint]"
@@ -315,24 +220,6 @@
       "scale": null,
       "properties": {
         "enabled": true,
-        "hostNameSslStates": [
-          {
-            "name": "[concat(parameters('sites_fake_fe_name'),'.azurewebsites.net')]",
-            "sslState": "Disabled",
-            "virtualIP": null,
-            "thumbprint": null,
-            "toUpdate": null,
-            "hostType": "Standard"
-          },
-          {
-            "name": "[concat(parameters('sites_fake_fe_name'),'.scm.azurewebsites.net')]",
-            "sslState": "Disabled",
-            "virtualIP": null,
-            "thumbprint": null,
-            "toUpdate": null,
-            "hostType": "Repository"
-          }
-        ],
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]",
         "reserved": true,
         "siteConfig": null,
@@ -346,6 +233,7 @@
         "cloningInfo": null
       },
       "dependsOn": [
+        "[concat('Microsoft.Web/certificates/',parameters('certificateName'))]",
         "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]"
       ]
     },
@@ -1131,22 +1019,6 @@
       ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/hostNameBindings/fake-api-test.azurewebsites.net'.",
-      "type": "Microsoft.Web/sites/hostNameBindings",
-      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('hostNameBindings_fake_api.azurewebsites.net_name'))]",
-      "apiVersion": "2016-08-01",
-      "location": "East US",
-      "scale": null,
-      "properties": {
-        "siteName": "[parameters('sites_fake_api_name')]",
-        "domainId": null,
-        "hostNameType": "Verified"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
-      ]
-    },
-    {
       "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake2-test/config/web'.",
       "type": "Microsoft.Web/sites/config",
       "name": "[concat(parameters('sites_fake2_name'), '/', parameters('config_web_name'))]",
@@ -1274,53 +1146,6 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', parameters('sites_fake2_name'))]"
-      ]
-    },
-    {
-      "name": "[variables('fakesqlName')]",
-      "type": "Microsoft.Sql/servers",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2014-04-01-preview",
-      "dependsOn": [],
-      "tags": {
-        "displayName": "fakesql"
-      },
-      "properties": {
-        "administratorLogin": "[parameters('fakesqlAdminLogin')]",
-        "administratorLoginPassword": "[parameters('fakesqlAdminLoginPassword')]"
-      },
-      "resources": [
-        {
-          "name": "AllowAllWindowsAzureIps",
-          "type": "firewallrules",
-          "location": "[resourceGroup().location]",
-          "apiVersion": "2014-04-01-preview",
-          "dependsOn": [
-            "[resourceId('Microsoft.Sql/servers', variables('fakesqlName'))]"
-          ],
-          "properties": {
-            "startIpAddress": "0.0.0.0",
-            "endIpAddress": "0.0.0.0"
-          }
-        },
-        {
-          "name": "[parameters('fakesqldisplayName')]",
-          "type": "databases",
-          "location": "[resourceGroup().location]",
-          "apiVersion": "2014-04-01-preview",
-          "dependsOn": [
-            "[resourceId('Microsoft.Sql/servers', variables('fakesqlName'))]"
-          ],
-          "tags": {
-            "displayName": "fakesqldisplay"
-          },
-          "properties": {
-            "collation": "[parameters('fakesqldisplayCollation')]",
-            "edition": "[parameters('fakesqldisplayEdition')]",
-            "maxSizeBytes": "1073741824",
-            "requestedServiceObjectiveName": "[parameters('fakesqldisplayRequestedServiceObjectiveName')]"
-          }
-        }
       ]
     }
   ]
