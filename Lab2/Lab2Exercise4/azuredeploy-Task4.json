@@ -143,123 +143,6 @@
       ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/config/web'.",
-      "type": "Microsoft.Web/sites/config",
-      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('config_web_name_2'))]",
-      "apiVersion": "2016-08-01",
-      "location": "East US",
-      "tags": {
-        "ENV": "[parameters('env')]"
-      },
-      "scale": null,
-      "properties": {
-        "numberOfWorkers": 1,
-        "defaultDocuments": [
-          "Default.htm",
-          "Default.html",
-          "Default.asp",
-          "index.htm",
-          "index.html",
-          "iisstart.htm",
-          "default.aspx",
-          "index.php",
-          "hostingstart.html"
-        ],
-        "netFrameworkVersion": "v4.0",
-        "phpVersion": "",
-        "pythonVersion": "",
-        "nodeVersion": "",
-        "linuxFxVersion": "DOCKER|fakeregistry.azurecr.io/fakeapi:67",
-        "windowsFxVersion": null,
-        "requestTracingEnabled": false,
-        "remoteDebuggingEnabled": false,
-        "remoteDebuggingVersion": "VS2012",
-        "httpLoggingEnabled": true,
-        "logsDirectorySizeLimit": 35,
-        "detailedErrorLoggingEnabled": false,
-        "publishingUsername": "[concat('$', parameters('sites_fake_api_name'))]",
-        "publishingPassword": null,
-        "appSettings": null,
-        "metadata": null,
-        "connectionStrings": null,
-        "machineKey": null,
-        "handlerMappings": null,
-        "documentRoot": null,
-        "scmType": "GitHub",
-        "use32BitWorkerProcess": true,
-        "webSocketsEnabled": false,
-        "alwaysOn": false,
-        "javaVersion": null,
-        "javaContainer": null,
-        "javaContainerVersion": null,
-        "appCommandLine": "",
-        "managedPipelineMode": "Integrated",
-        "virtualApplications": [
-          {
-            "virtualPath": "/",
-            "physicalPath": "site\\wwwroot",
-            "preloadEnabled": false,
-            "virtualDirectories": null
-          }
-        ],
-        "winAuthAdminState": 0,
-        "winAuthTenantState": 0,
-        "customAppPoolIdentityAdminState": false,
-        "customAppPoolIdentityTenantState": false,
-        "runtimeADUser": null,
-        "runtimeADUserPassword": null,
-        "loadBalancing": "LeastRequests",
-        "routingRules": [],
-        "experiments": {
-          "rampUpRules": []
-        },
-        "limits": null,
-        "autoHealEnabled": false,
-        "autoHealRules": null,
-        "tracingOptions": null,
-        "vnetName": "",
-        "siteAuthEnabled": false,
-        "siteAuthSettings": {
-          "enabled": null,
-          "unauthenticatedClientAction": null,
-          "tokenStoreEnabled": null,
-          "allowedExternalRedirectUrls": null,
-          "defaultProvider": null,
-          "clientId": null,
-          "clientSecret": null,
-          "issuer": null,
-          "allowedAudiences": null,
-          "additionalLoginParams": null,
-          "isAadAutoProvisioned": false,
-          "googleClientId": null,
-          "googleClientSecret": null,
-          "googleOAuthScopes": null,
-          "facebookAppId": null,
-          "facebookAppSecret": null,
-          "facebookOAuthScopes": null,
-          "twitterConsumerKey": null,
-          "twitterConsumerSecret": null,
-          "microsoftAccountClientId": null,
-          "microsoftAccountClientSecret": null,
-          "microsoftAccountOAuthScopes": null
-        },
-        "cors": null,
-        "push": null,
-        "apiDefinition": null,
-        "autoSwapSlotName": null,
-        "localMySqlEnabled": false,
-        "managedServiceIdentityId": null,
-        "xManagedServiceIdentityId": null,
-        "ipSecurityRestrictions": null,
-        "http20Enabled": false,
-        "minTlsVersion": "1.0",
-        "ftpsState": "AllAllowed"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
-      ]
-    },
-    {
       "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101112'.",
       "type": "Microsoft.Web/sites/deployments",
       "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101112_name'))]",
@@ -269,13 +152,13 @@
       "properties": {
         "id": "[parameters('deployments_123456789101112_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"660a222f72401cc8108f73fcf798084b0b84532e\",\"buildId\":\"67\",\"releaseId\":\"29\",\"buildNumber\":\"67\",\"releaseName\":\"Release-16\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-05-05T02:54:24.226054Z",
-        "end_time": "2018-05-05T02:54:24.226054Z",
-        "active": true
+        "startTime": "2018-05-05T02:54:24.226054Z",
+        "endTime": "2018-05-05T02:54:24.226054Z",
+        "active": false
       },
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
@@ -291,12 +174,12 @@
       "properties": {
         "id": "[parameters('deployments_123456789101113_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"71ef3eb73b7336dc391066693d248abf787930e1\",\"buildId\":\"61\",\"releaseId\":\"27\",\"buildNumber\":\"61\",\"releaseName\":\"Release-8\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-05-21T15:43:53.656576Z",
-        "end_time": "2018-05-21T15:43:53.656576Z",
+        "startTime": "2018-05-21T15:43:53.656576Z",
+        "endTime": "2018-05-21T15:43:53.656576Z",
         "active": false
       },
       "dependsOn": [
@@ -313,12 +196,12 @@
       "properties": {
         "id": "[parameters('deployments_123456789101114_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"a109b90883eb6bc6a2d63aca22376d100b2e84d2\",\"buildId\":\"60\",\"releaseId\":\"26\",\"buildNumber\":\"60\",\"releaseName\":\"Release-7\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-05-21T15:29:16.054895Z",
-        "end_time": "2018-05-21T15:29:16.054895Z",
+        "startTime": "2018-05-21T15:29:16.054895Z",
+        "endTime": "2018-05-21T15:29:16.054895Z",
         "active": false
       },
       "dependsOn": [
@@ -335,12 +218,12 @@
       "properties": {
         "id": "[parameters('deployments_123456789101115_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"ebac8863358fcde3ecab41bbe4ef831a9b4d481a\",\"buildId\":\"59\",\"releaseId\":\"25\",\"buildNumber\":\"59\",\"releaseName\":\"Release-6\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-05-21T00:18:15.932473Z",
-        "end_time": "2018-05-21T00:18:15.932473Z",
+        "startTime": "2018-05-21T00:18:15.932473Z",
+        "endTime": "2018-05-21T00:18:15.932473Z",
         "active": false
       },
       "dependsOn": [
@@ -357,12 +240,12 @@
       "properties": {
         "id": "[parameters('deployments_123456789101116_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"479ee76c8fc261f605f0bf3e2ccd63ae94ba879b\",\"buildId\":\"58\",\"releaseId\":\"24\",\"buildNumber\":\"58\",\"releaseName\":\"Release-5\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-06-02T15:16:53.476098Z",
-        "end_time": "2018-06-02T15:16:53.476098Z",
+        "startTime": "2018-06-02T15:16:53.476098Z",
+        "endTime": "2018-06-02T15:16:53.476098Z",
         "active": false
       },
       "dependsOn": [
@@ -379,12 +262,12 @@
       "properties": {
         "id": "[parameters('deployments_123456789101117_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"8d6779046f663c01f1f1ad9ef18fc3c4595aba37\",\"buildId\":\"56\",\"releaseId\":\"23\",\"buildNumber\":\"56\",\"releaseName\":\"Release-4\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-05-21T19:46:28.28038Z",
-        "end_time": "2018-05-21T19:46:28.28038Z",
+        "startTime": "2018-05-21T19:46:28.28038Z",
+        "endTime": "2018-05-21T19:46:28.28038Z",
         "active": false
       },
       "dependsOn": [
@@ -401,12 +284,12 @@
       "properties": {
         "id": "[parameters('deployments_123456789101118_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"031d39cad485ea1bf880450d1201458ed47395ca\",\"buildId\":\"55\",\"releaseId\":\"22\",\"buildNumber\":\"55\",\"releaseName\":\"Release-3\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-05-23T19:09:28.263341Z",
-        "end_time": "2018-05-23T19:09:28.263341Z",
+        "startTime": "2018-05-23T19:09:28.263341Z",
+        "endTime": "2018-05-23T19:09:28.263341Z",
         "active": false
       },
       "dependsOn": [
@@ -423,12 +306,12 @@
       "properties": {
         "id": "[parameters('deployments_123456789101119_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"f843e41f3f55b0d645242e4b01231065fd6527f2\",\"buildId\":\"54\",\"releaseId\":\"21\",\"buildNumber\":\"54\",\"releaseName\":\"Release-2\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-05-23T18:42:44.287755Z",
-        "end_time": "2018-05-23T18:42:44.287755Z",
+        "startTime": "2018-05-23T18:42:44.287755Z",
+        "endTime": "2018-05-23T18:42:44.287755Z",
         "active": false
       },
       "dependsOn": [
@@ -445,12 +328,12 @@
       "properties": {
         "id": "[parameters('deployments_123456789101120_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"5cdcb729faa3d7ee2a18703a56ea0562bf59a68e\",\"buildId\":\"53\",\"releaseId\":\"20\",\"buildNumber\":\"53\",\"releaseName\":\"Release-1\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-05-23T18:16:03.504827Z",
-        "end_time": "2018-05-23T18:16:03.504827Z",
+        "startTime": "2018-05-23T18:16:03.504827Z",
+        "endTime": "2018-05-23T18:16:03.504827Z",
         "active": false
       },
       "dependsOn": [
@@ -467,12 +350,12 @@
       "properties": {
         "id": "[parameters('deployments_123456789101121_name')]",
         "status": 4,
-        "author_email": "",
+        "authorEmail": "",
         "author": "Firstname Lastname",
         "deployer": "VSTS",
         "message": "{\"type\":\"Deployment\",\"commitId\":\"b59495a08982c75e998ef92980b002a6ad1a3981\",\"buildId\":\"51\",\"releaseId\":\"19\",\"buildNumber\":\"51\",\"releaseName\":\"Release-15\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
-        "start_time": "2018-05-21T14:34:13.460589Z",
-        "end_time": "2018-05-21T14:34:13.460589Z",
+        "startTime": "2018-05-21T14:34:13.460589Z",
+        "endTime": "2018-05-21T14:34:13.460589Z",
         "active": false
       },
       "dependsOn": [

@@ -28,7 +28,7 @@
     }
   },
   "variables": {
-    
+
   },
   "resources": [
     {
@@ -147,7 +147,8 @@
         "active": false
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]",
+        "[concat('Microsoft.Web/Sites/', parameters('sites_fake_api_name'), '/deployments/', parameters('deployments_123456789101112_name'))]"
       ]
     }
   ]
