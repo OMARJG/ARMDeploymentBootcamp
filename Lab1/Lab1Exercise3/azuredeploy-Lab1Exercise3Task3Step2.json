@@ -4,7 +4,13 @@
   "parameters": {
     "hostingPlanName": {
       "type": "string",
-      "minLength": 1
+      "minLength": 5
+    },
+    "yourAlias": {
+      "type": "string"
+    },
+    "baseName": {
+      "type": "string"
     },
     "skuName": {
       "type": "string",
@@ -37,7 +43,18 @@
     }
   },
   "variables": {
-    "webSiteName": "[concat('webSite', uniqueString(resourceGroup().id))]"
+    "WebSiteAPI": "[concat(parameters('yourAlias'), parameters('baseName'), 'API')]",
+    "WebSiteFrontEnd": "[concat(parameters('yourAlias'), parameters('baseName'), 'FrontEnd')]",
+    "appSettings": {
+      "allAPIs": {
+        "fakeKey1": "fakeAPIValue1",
+        "fakeKey2": "fakeAPIValue2"
+      },
+      "allFrontEnds": {
+        "fakeKey1": "fakeFrontEndValue1",
+        "fakeKey2": "fakeFrontEndValue2"
+      }
+    }
   },
   "resources": [
     {
@@ -58,20 +75,32 @@
     },
     {
       "apiVersion": "2015-08-01",
-      "name": "[variables('webSiteName')]",
+      "name": "[variables('WebSiteAPI')]",
       "type": "Microsoft.Web/sites",
       "location": "[resourceGroup().location]",
       "tags": {
         "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "Resource",
         "displayName": "Website"
       },
+      "properties": {
+        "name": "[variables('WebSiteAPI')]",
+        "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
+      },
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
-      ],
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "name": "[concat(variables('WebSiteAPI'), '/appsettings')]",
+      "apiVersion": "2015-08-01",
       "properties": {
-        "name": "[variables('webSiteName')]",
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
-      }
+        "appSetting1": "[variables('appSettings').allAPIs.fakeKey1]",
+        "appSetting2": "[variables('appSettings').allAPIs.fakeKey2]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('WebSiteAPI'))]"
+      ]
     }
   ]
 }
