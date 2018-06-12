@@ -336,24 +336,6 @@
       "scale": null,
       "properties": {
         "enabled": true,
-        "hostNameSslStates": [
-          {
-            "name": "[concat(parameters('sites_fake_api_name'),'.azurewebsites.net')]",
-            "sslState": "Disabled",
-            "virtualIP": null,
-            "thumbprint": null,
-            "toUpdate": null,
-            "hostType": "Standard"
-          },
-          {
-            "name": "[concat(parameters('sites_fake_api_name'),'.scm.azurewebsites.net')]",
-            "sslState": "Disabled",
-            "virtualIP": null,
-            "thumbprint": null,
-            "toUpdate": null,
-            "hostType": "Repository"
-          }
-        ],
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]",
         "reserved": true,
         "siteConfig": null,
