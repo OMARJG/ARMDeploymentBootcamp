@@ -11,7 +11,7 @@
     "certificateName": {
       "type": "string"
     },
-    "hostName1": {
+    "customDomain": {
       "type": "string"
     }
   },
@@ -23,7 +23,7 @@
         "location": "[resourceGroup().location]",
         "properties": {
           "hostNames": [
-            "[parameters('hostName1')]"
+            "[parameters('customDomain')]"
           ],
           "pfxBlob": "[parameters('certificatePfxBase64')]",
           "password": "[parameters('certificatePfxPassword')]"
