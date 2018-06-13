@@ -72,7 +72,7 @@
       },
 	        "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
-      ],
+      ]
     }
   ]
 }
