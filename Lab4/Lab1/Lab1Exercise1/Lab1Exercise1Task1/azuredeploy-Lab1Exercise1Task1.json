@@ -34,19 +34,17 @@
       "metadata": {
         "description": "Describes plan's instance count"
       }
-    },
-    "region": {
-	  "defaultValue": "[resourceGroup().location]",
-      "type": "string",
-      "minLength": 1
     }
+  },
+  "variables": {
+    "webSiteName": "[concat('webSite', uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {
       "apiVersion": "2015-08-01",
       "name": "[parameters('hostingPlanName')]",
       "type": "Microsoft.Web/serverfarms",
-      "location": "[parameters('region')]",
+      "location": "[resourceGroup().location]",
       "tags": {
         "displayName": "HostingPlan"
       },
@@ -57,12 +55,23 @@
       "properties": {
         "name": "[parameters('hostingPlanName')]"
       }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('webSiteName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "Resource",
+        "displayName": "Website"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
+      ],
+      "properties": {
+        "name": "[variables('webSiteName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
+      }
     }
-  ],
-  "outputs": {
-    "hostingPlanResourceId": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
-    }
-  }
+  ]
 }

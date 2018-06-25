@@ -2,29 +2,17 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "certificatePfxBase64": {
-      "type": "securestring"
-    },
-    "certificatePfxPassword": {
-      "type": "securestring"
-    },
-    "certificateName": {
-      "type": "string"
-    },
-    "customDomain": {
-      "type": "string"
+    "hostingPlanName": {
+      "type": "string",
+      "minLength": 1
     },
     "webSiteName": {
       "type": "string",
       "minLength": 1
     },
-    "hostingPlanName": {
-      "type": "string",
-      "minLength": 1
-    },
     "skuName": {
       "type": "string",
-      "defaultValue": "S1",
+      "defaultValue": "F1",
       "allowedValues": [
         "F1",
         "D1",
@@ -52,34 +40,10 @@
       }
     }
   },
+  "variables": {
+    "skuname": "parameters('skuName')"
+  },
   "resources": [
-    {
-      "type": "Microsoft.Web/certificates",
-      "name": "[parameters('certificateName')]",
-      "apiVersion": "2015-08-01",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "hostNames": [
-          "[parameters('customDomain')]"
-        ],
-        "pfxBlob": "[parameters('certificatePfxBase64')]",
-        "password": "[parameters('certificatePfxPassword')]"
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/hostnameBindings",
-      "name": "[concat(parameters('webSiteName'), '/', parameters('customDomain'))]",
-      "apiVersion": "2015-08-01",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "sslState": "SniEnabled",
-        "thumbprint": "[reference(resourceId('Microsoft.Web/certificates', parameters('certificateName'))).Thumbprint]"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Web/certificates/',parameters('certificateName'))]",
-        "[resourceId('Microsoft.Web/sites/',parameters('webSiteName'))]"
-      ]
-    },
     {
       "apiVersion": "2015-08-01",
       "name": "[parameters('hostingPlanName')]",
@@ -89,7 +53,7 @@
         "displayName": "HostingPlan"
       },
       "sku": {
-        "name": "[parameters('skuName')]",
+        "name": "[variables('skuName')]",
         "capacity": "[parameters('skuCapacity')]"
       },
       "properties": {
@@ -110,8 +74,7 @@
         "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
-        "[resourceId('Microsoft.Web/certificates/', parameters('certificateName'))]"
+        "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
       ]
     }
   ]

@@ -34,11 +34,6 @@
       "metadata": {
         "description": "Describes plan's instance count"
       }
-    },
-    "region": {
-	  "defaultValue": "[resourceGroup().location]",
-      "type": "string",
-      "minLength": 1
     }
   },
   "resources": [
@@ -46,7 +41,7 @@
       "apiVersion": "2015-08-01",
       "name": "[parameters('hostingPlanName')]",
       "type": "Microsoft.Web/serverfarms",
-      "location": "[parameters('region')]",
+      "location": "[resourceGroup().location]",
       "tags": {
         "displayName": "HostingPlan"
       },
@@ -58,11 +53,5 @@
         "name": "[parameters('hostingPlanName')]"
       }
     }
-  ],
-  "outputs": {
-    "hostingPlanResourceId": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
-    }
-  }
+  ]
 }

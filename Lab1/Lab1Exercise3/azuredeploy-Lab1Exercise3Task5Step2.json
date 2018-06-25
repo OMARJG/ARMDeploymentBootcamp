@@ -4,11 +4,13 @@
   "parameters": {
     "hostingPlanName": {
       "type": "string",
-      "minLength": 1
+      "minLength": 5
     },
-    "webSiteName": {
-      "type": "string",
-      "minLength": 1
+    "yourAlias": {
+      "type": "string"
+    },
+    "baseName": {
+      "type": "string"
     },
     "skuName": {
       "type": "string",
@@ -40,10 +42,24 @@
       }
     }
   },
+  "variables": {
+    "WebSiteAPI": "[concat(parameters('yourAlias'), parameters('baseName'), 'API')]",
+    "WebSiteFrontEnd": "[concat(parameters('yourAlias'), parameters('baseName'), 'FrontEnd')]",
+    "regions": [
+      {
+        "name": "East",
+        "region": "East US"
+      },
+      {
+        "name": "West",
+        "region": "West US"
+      }
+    ]
+  },
   "resources": [
     {
       "apiVersion": "2015-08-01",
-      "name": "[parameters('hostingPlanName)]",
+      "name": "[parameters('hostingPlanName')]",
       "type": "Microsoft.Web/serverfarms",
       "location": "[resourceGroup().location]",
       "tags": {
@@ -53,21 +69,28 @@
         "name": "[parameters('skuName')]",
         "capacity": "[parameters('skuCapacity')]"
       },
-      "properties": {
-        "name": "[parameters('hostingPlanName')]"
-      }
+      "properties": {}
     },
     {
       "apiVersion": "2015-08-01",
-      "name": "[parameters('webSiteName')]",
+      "name": "[variables('WebSiteAPI')]",
       "type": "Microsoft.Web/sites",
       "location": "[resourceGroup().location]",
-      "tags": {
-        "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "Resource",
-        "displayName": "Website"
-      },
       "properties": {
-        "name": "[parameters('webSiteName')]",
+        "name": "[variables('WebSiteAPI')]",
+        "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('WebSiteFrontEnd')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[variables('WebSiteFrontEnd')]",
         "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
       },
       "dependsOn": [

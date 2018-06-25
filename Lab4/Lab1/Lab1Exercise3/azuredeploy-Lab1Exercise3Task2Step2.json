@@ -2,29 +2,19 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "certificatePfxBase64": {
-      "type": "securestring"
-    },
-    "certificatePfxPassword": {
-      "type": "securestring"
-    },
-    "certificateName": {
-      "type": "string"
-    },
-    "customDomain": {
-      "type": "string"
-    },
-    "webSiteName": {
-      "type": "string",
-      "minLength": 1
-    },
     "hostingPlanName": {
       "type": "string",
-      "minLength": 1
+      "minLength": 5
+    },
+    "yourAlias": {
+      "type": "string"
+    },
+    "baseName": {
+      "type": "string"
     },
     "skuName": {
       "type": "string",
-      "defaultValue": "S1",
+      "defaultValue": "F1",
       "allowedValues": [
         "F1",
         "D1",
@@ -52,34 +42,21 @@
       }
     }
   },
-  "resources": [
-    {
-      "type": "Microsoft.Web/certificates",
-      "name": "[parameters('certificateName')]",
-      "apiVersion": "2015-08-01",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "hostNames": [
-          "[parameters('customDomain')]"
-        ],
-        "pfxBlob": "[parameters('certificatePfxBase64')]",
-        "password": "[parameters('certificatePfxPassword')]"
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/hostnameBindings",
-      "name": "[concat(parameters('webSiteName'), '/', parameters('customDomain'))]",
-      "apiVersion": "2015-08-01",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "sslState": "SniEnabled",
-        "thumbprint": "[reference(resourceId('Microsoft.Web/certificates', parameters('certificateName'))).Thumbprint]"
+  "variables": {
+    "WebSiteAPI": "[concat(parameters('yourAlias'), parameters('baseName'), 'API')]",
+    "WebSiteFrontEnd": "[concat(parameters('yourAlias'), parameters('baseName'), 'FrontEnd')]",
+    "appSettings": {
+      "allAPIs": {
+        "fakeKey1": "fakeAPIValue1",
+        "fakeKey2": "fakeAPIValue2"
       },
-      "dependsOn": [
-        "[concat('Microsoft.Web/certificates/',parameters('certificateName'))]",
-        "[resourceId('Microsoft.Web/sites/',parameters('webSiteName'))]"
-      ]
-    },
+      "allFrontEnds": {
+        "fakeKey1": "fakeFrontEndValue1",
+        "fakeKey2": "fakeFrontEndValue2"
+      }
+    }
+  },
+  "resources": [
     {
       "apiVersion": "2015-08-01",
       "name": "[parameters('hostingPlanName')]",
@@ -98,7 +75,7 @@
     },
     {
       "apiVersion": "2015-08-01",
-      "name": "[parameters('webSiteName')]",
+      "name": "[parameters('baseName')]",
       "type": "Microsoft.Web/sites",
       "location": "[resourceGroup().location]",
       "tags": {
@@ -106,12 +83,11 @@
         "displayName": "Website"
       },
       "properties": {
-        "name": "[parameters('webSiteName')]",
+        "name": "[parameters('baseName')]",
         "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
-        "[resourceId('Microsoft.Web/certificates/', parameters('certificateName'))]"
+        "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
       ]
     }
   ]

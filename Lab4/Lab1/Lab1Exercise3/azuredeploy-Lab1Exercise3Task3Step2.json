@@ -101,45 +101,6 @@
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites', variables('WebSiteAPI'))]"
       ]
-    },
-    {
-      "apiVersion": "2015-08-01",
-      "name": "[variables('WebSiteFrontEnd')]",
-      "type": "Microsoft.Web/sites",
-      "location": "[resourceGroup().location]",
-      "tags": {
-        "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "Resource",
-        "displayName": "Website"
-      },
-      "properties": {
-        "name": "[variables('WebSiteFrontEnd')]",
-        "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Web/sites/config",
-      "name": "[concat(variables('WebSiteFrontEnd'), '/appsettings')]",
-      "apiVersion": "2015-08-01",
-      "properties": {
-        "appSetting1": "[variables('appSettings').allFrontEnds.fakeKey1]",
-        "appSetting2": "[variables('appSettings').allFrontEnds.fakeKey2]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('WebSiteFrontEnd'))]"
-      ]
     }
-  ],
-  "outputs": {
-    "FrontEndResourceID": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.Web/sites', variables('WebSiteFrontEnd'))]"
-    },
-    "FrontEndURL": {
-      "type": "string",
-      "value": "[concat('https://', variables('WebSiteFrontEnd'), '.azurewebsites.net')]"
-    }
-  }
+  ]
 }
