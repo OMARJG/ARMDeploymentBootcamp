@@ -40,9 +40,6 @@
       }
     }
   },
-  "variables": {
-    "skuname": "parameters('skuName')"
-  },
   "resources": [
     {
       "apiVersion": "2015-08-01",
@@ -53,7 +50,7 @@
         "displayName": "HostingPlan"
       },
       "sku": {
-        "name": "[variables('skuName')]",
+        "name": "[parameters('skuName')]",
         "capacity": "[parameters('skuCapacity')]"
       },
       "properties": {
@@ -73,7 +70,7 @@
         "name": "[parameters('webSiteName')]",
         "serverFarmId": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
       },
-      "dependsOn": [
+	        "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
       ]
     }
