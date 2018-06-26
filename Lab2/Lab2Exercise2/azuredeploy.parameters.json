@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "hostingPlanName": {
-      "value": "fakeaspl2e3t2s1"
+      "value": ""
     },
-    "baseName": {
-      "value": "fakeappl2e3t2s1"
+    "webSiteName": {
+      "value": ""
     }
   }
 }
